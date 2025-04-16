@@ -1,0 +1,179 @@
+/* Base styling */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #425f73;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    color: #edece6;
+}
+
+header {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header h1 {
+    margin-bottom: 5px;
+}
+
+header p {
+    font-size: 14px;
+    font-weight: 200;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.buttons button {
+    background-color: rgb(241, 235, 235);
+    color: #425f73;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 7px;
+}
+
+
+.buttons button:hover {
+    background-color: #e0e0e0;
+}
+
+.count {
+    margin-bottom: 30px;
+    font-size: 14px;
+    font-weight: 100;
+}
+
+/* Container for preview area */
+#preview {
+    display: flex;
+    gap: 14.8px;
+    flex-wrap: wrap;
+
+}
+
+/* card */
+.card {
+    width: 100px;
+    height: 150px;
+    perspective: 1000px;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Card faces */
+.card-front,
+.card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    border: 1px solid #000;
+    border-radius: 10px;
+    /* padding: 6px; */
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-family: 'Roboto Slab', serif;
+}
+
+/* Card front with suit color */
+/* get the color vairable from the card object */
+.card-front.red {
+    background-color: #f4e8d4;
+    color: red;
+}
+
+.card-front.black {
+    background-color: #f4e8d4;
+    color: black;
+}
+
+.card-back {
+    color: white;
+    transform: rotateY(180deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+
+
+    background-color: #ebe6de;
+    background-image:
+        repeating-linear-gradient(45deg,
+            #be1c1c,
+            #be1c1c 1.7px,
+            transparent 1.7px,
+            transparent 6px),
+        repeating-linear-gradient(-45deg,
+            #be1c1c,
+            #be1c1c 1.7px,
+            transparent 1.7px,
+            transparent 6px);
+    border-radius: 10px;
+    box-shadow:
+        inset 0 0 0 6px #f4e8d4,
+        0 2px 6px rgba(0, 0, 0, 0.2),
+        0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Corner indicators */
+.card-corner {
+    position: absolute;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.top-left {
+    top: 6px;
+    left: 6px;
+    text-align: left;
+}
+
+.bottom-right {
+    bottom: 6px;
+    right: 6px;
+    text-align: right;
+    transform: rotate(180deg);
+}
+
+/* Center content: suit or face icon --> this part decide what to show on middle */
+.card-center,
+.face-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.card-center {
+    font-size: 28px;
+}
+
+.face-card {
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
