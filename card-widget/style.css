@@ -55,6 +55,7 @@ header p {
 
 /* Container for preview area */
 #preview {
+    position: relative;
     display: flex;
     gap: 14.8px;
     flex-wrap: wrap;
@@ -174,30 +175,4 @@ header p {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-@keyframes shuffle-anim {
-    0% {
-        transform: translateY(0) rotate(0deg) scale(1);
-    }
-
-    25% {
-        transform: translateY(-5px) rotate(2deg) scale(1.05);
-    }
-
-    50% {
-        transform: translateY(5px) rotate(-2deg) scale(0.95);
-    }
-
-    75% {
-        transform: translateY(-3px) rotate(1deg) scale(1.02);
-    }
-
-    100% {
-        transform: translateY(0) rotate(0deg) scale(1);
-    }
-}
-
-.card.shuffle-effect {
-    animation: shuffle-anim 0.4s ease-in-out;
 }
