@@ -1,38 +1,46 @@
 
 // our main funtion that creates the card
 function createCardElement(rank, suit) {
-    const faceIcons = {
-        'J': '🤹',
-        'Q': '👸',
-        'K': '👑'
-    };
+  const faceIcons = {
+    'J': {
+      black: './faces/j_black.svg',
+      red: './faces/j_red.svg'
+    },
+    'Q': {
+      black: './faces/q_black.svg',
+      red: './faces/q_red.svg'
+    },
+    'K': {
+      black: './faces/k_black.svg',
+      red: './faces/k_red.svg'
+    }
+  };
 
 
-    // Creating card element as div, adding class "card"
-    const card = document.createElement("div");
-    card.className = "card";
+  // Creating card element as div, adding class "card"
+  const card = document.createElement("div");
+  card.className = "card";
 
-    // Setting card color based on suit.color variable
-    const cardColor = suit.color;
+  // Setting card color based on suit.color variable
+  const cardColor = suit.color;
 
 
-    // either face or normal symbol
-    const getCenterContent = () => {
-        if (faceIcons[rank]) {
-            return `
+  // either face or normal symbol
+  const getCenterContent = () => {
+    if (faceIcons[rank] && faceIcons[rank][suit.color]) {
+      return `
           <div class="face-card">
-            <div>${faceIcons[rank]}</div>
-            <div>${rank === 'J' ? 'Jack' : rank === 'Q' ? 'Queen' : 'King'}</div>
+            <img src="${faceIcons[rank][suit.color]}" alt="${rank}" class="face-img" />
           </div>
         `;
-        } else {
-            return `<div class="card-center">${suit.symbol}</div>`;
-        }
-    };
+    } else {
+      return `<div class="card-center">${suit.symbol}</div>`;
+    }
+  };
 
 
-    // main execution
-    card.innerHTML = `
+  // main execution
+  card.innerHTML = `
       <div class="card-inner"> 
         <div class="card-front ${cardColor}">
           <div class="card-corner top-left">
@@ -49,12 +57,12 @@ function createCardElement(rank, suit) {
       </div>
     `;
 
-    // click flip part
-    card.addEventListener("click", () => {
-        card.classList.toggle("flipped");
-    });
+  // click flip part
+  card.addEventListener("click", () => {
+    card.classList.toggle("flipped");
+  });
 
-    return card;
+  return card;
 }
 
 
@@ -62,63 +70,70 @@ function createCardElement(rank, suit) {
 // now here is the part where card is executed
 
 (() => {
-    // this part make the card preview, grabbing the DOM preview element
-    const preview = document.getElementById("preview");
+  // this part make the card preview, grabbing the DOM preview element
+  const preview = document.getElementById("preview");
 
-    // Contains all the suits and their colors that I want
-    const suits = [
-        { symbol: '♠', color: 'black' },
-        { symbol: '♥', color: 'red' },
-        { symbol: '♦', color: 'red' },
-        { symbol: '♣', color: 'black' }
-    ];
+  // Contains all the suits and their colors that I want
+  const suits = [
+    { symbol: '♠', color: 'black' },
+    { symbol: '♥', color: 'red' },
+    { symbol: '♦', color: 'red' },
+    { symbol: '♣', color: 'black' }
+  ];
 
-    // Contains all the ranks that I want
-    const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  // Contains all the ranks that I want
+  const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
-    // Loop through the suits and ranks to create cards
+  // Loop through the suits and ranks to create cards
 
-    // TODO: how about adding the shuffle button here?
-    let count = 0;
-    const cards = [];
+  // TODO: how about adding the shuffle button here?
+  let count = 0;
+  const cards = [];
 
-    for (let i = 0; i < suits.length; i++) {
-        for (let j = 0; j < ranks.length; j++) {
-            const card = createCardElement(ranks[j], suits[i]);
-            cards.push(card);
-            count++;
-        }
+  for (let i = 0; i < suits.length; i++) {
+    for (let j = 0; j < ranks.length; j++) {
+      const card = createCardElement(ranks[j], suits[i]);
+      cards.push(card);
+      count++;
     }
+  }
 
-    cards.forEach(card => preview.appendChild(card));
+  cards.forEach(card => preview.appendChild(card));
 
-    // best way to sort is using Fisher-Yates algorithm
+  // best way to sort is using Fisher-Yates algorithm
 
-    const shuffle = document.querySelector('.shuffle');
-    shuffle.addEventListener('click', () => {
-        for (let i = cards.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            const temp = cards[i];
-            cards[i] = cards[j];
-            cards[j] = temp;
-        }
-
-        preview.innerHTML = '';
-        cards.forEach(card => preview.appendChild(card));
+  const shuffle = document.querySelector('.shuffle');
+  shuffle.addEventListener('click', () => {
+    cards.forEach(card => {
+      card.classList.add('shuffle-effect');
+      card.addEventListener('animationend', () => {
+        card.classList.remove('shuffle-effect');
+      }), { once: true }
     })
 
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = cards[i];
+      cards[i] = cards[j];
+      cards[j] = temp;
+    }
+
+    preview.innerHTML = '';
+    cards.forEach(card => preview.appendChild(card));
+  })
 
 
 
-    document.getElementById("card-count").innerText = count;
 
-    const flipAll = document.querySelector('.flip');
-    flipAll.addEventListener('click', () => {
-        const cards = document.querySelectorAll('.card');
-        for (const card of cards) {
-            card.classList.toggle('flipped');
-        }
-    });
+  document.getElementById("card-count").innerText = count;
+
+  const flipAll = document.querySelector('.flip');
+  flipAll.addEventListener('click', () => {
+    const cards = document.querySelectorAll('.card');
+    for (const card of cards) {
+      card.classList.toggle('flipped');
+    }
+  });
 
 
 })();
